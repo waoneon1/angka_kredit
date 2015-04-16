@@ -7,7 +7,11 @@
       <link rel="stylesheet" href="css/style.css">
       <script src="js/bootstrap.min.js"></script>
       <script src="js/add_image.js"></script>
-
+      <style>
+      *{
+            font-size: 12px;
+      }
+      </style>
       <!--tanggal-->
       <link type="text/css" rel="stylesheet" href="development-bundle/themes/ui-lightness/ui.all.css" />      
       <script src="development-bundle/jquery-1.8.0.min.js"></script>
@@ -28,73 +32,111 @@
 <body>
 
 <?php
-      $sambung = mysql_connect("localhost", "root", "") or die ("Gagal konek ke server.");
-      mysql_select_db("jabatan_fungsional") or die ("Gagal membuka database.");
+      include "koneksi.php";
+      $result = mysql_query("select * from data_dosen");
+
 ?>
-
 <form name="form1" method="post" action="form_dosen_insert.php" enctype="multipart/form-data">
-
+<div class="container-fluid">
+<div class="row">
 <div class="table-responsive"> 
-      <table width="109%" border="4" class="table table-striped table-borered">
-            <tr>
-                  <th width="15">ID</th>
-                  <th width="62">Tgl Penilaian</th>
-                  <th width="43">Nama Dosen</th>
-                  <th width="32">NIDN</th>
-                  <th width="26">No Seri</th>
-                  <th width="53">Tempat Lahir</th>
-                  <th width="33">Tgl Lahir</th>
-                  <th width="54">Jenis Kelamin</th>
-                  <th width="80">Pendidikan Akhir</th>
-                  <th width="54">Pangkat</th>
-                  <th width="53">Jabatan</th>
-                  <th width="27">TMT</th>
-                  <th width="57">Fakultas</th>
-                  <th width="138">Masa Kerja (Lama)</th>
-                  <th width="131">Masa Kerja (Baru)</th>
-                  <th width="36">Unit</th>
-                  <th width="53">Usulan Jabatan</th>
-                  <th colspan="3">Aksi</th>
+      <table class="table table-striped table-borered" border="1">
+            <tr align="center">
+                  <th>No</th>
+                  <th>Tgl Penilaian</th>
+                  <th>Nama Dosen</th>
+                  <th>NIDN</th>
+                  <th>No Seri</th>
+                  <!-- <th>Tempat Lahir</th> -->
+                  <!-- <th>Tgl Lahir</th> -->
+                  <th>JK</th>
+                  <th>Pend Akhir</th>
+                  <th>Pangkat</th>
+                  <th>Jabatan</th>
+                  <!-- <th>TMT</th> -->
+                  <!-- <th>Fakultas</th> -->
+                  <!-- <th>Masa Kerja (Lama)</th> -->
+                  <!-- <th>Masa Kerja (Baru)</th> -->
+                  <!-- <th>Unit</th> -->
+                  <th>Usulan</th>
+                  <th>Aksi</th>
             </tr>
             <?php
                         
-                  $query = "select * from data_dosen";
-                  $result = mysql_query($query, $sambung);
-                  
-                  while($buff = mysql_fetch_array($result)){
+                  $i=1;
+                  while($buff = mysql_fetch_assoc($result)){
                   
             ?>
-            <tr align="center">
-                  <td align="center"><?php echo $buff['id']; ?></td>
-                  <td align="center"><?php echo $buff['tgl_penilaian']; ?></td>
-                  <td align="center"><?php echo $buff['nama_dosen']; ?></td>
-                  <td align="center"><?php echo $buff['nidn']; ?></td>
-                  <td align="center"><?php echo $buff['no_seri']; ?></td>
-                  <td align="center"><?php echo $buff['tempat_lahir']; ?></td>
-                  <td align="center"><?php echo $buff['tgl_lahir']; ?></td>
-                  <td align="center"><?php echo $buff['jenis_kelamin']; ?></td>
-                  <td align="center"><?php echo $buff['pendidikan_akhir']; ?></td>
-                  <td align="center"><?php echo $buff['pangkat']; ?></td>
-                  <td align="center"><?php echo $buff['jabatan']; ?></td>
-                  <td align="center"><?php echo $buff['tmt']; ?></td>
-                  <td align="center"><?php echo $buff['fakultas']; ?></td>
-                  <td align="center"><?php echo $buff['mk_lama']; ?></td>
-                  <td align="center"><?php echo $buff['mk_baru']; ?></td>
-                  <td align="center"><?php echo $buff['unit']; ?></td>
-                  <td align="center"><?php echo $buff['usulan_jabatan']; ?></td>
-                  <td width="66">
-                        <a href="form_dosen_edit.php?id=<?php echo $buff['id']; ?>">edit</a>
-                        <a href="form_dosen_delete.php?id=<?php echo $buff['id']; ?>">delete</a>
+            <tr>
+                  <td valign="middle" rowspan='3'><?php echo $i  ?></td>
+                  <td valign="middle" rowspan='3'><?php echo $buff['tgl_penilaian']; ?></td>
+                  <td valign="middle" rowspan='3'><?php echo $buff['nama_dosen']; ?></td>
+                  <td valign="middle" rowspan='3'><?php echo $buff['nidn']; ?></td>
+                  <td valign="middle" rowspan='3'><?php echo $buff['no_seri']; ?></td>
+                  <!-- <td valign="middle" rowspan='3'><?php //echo $buff['tempat_lahir']; ?></td>
+                  <td valign="middle" rowspan='3'><?php //echo $buff['tgl_lahir']; ?></td> -->
+                  <td valign="middle" rowspan='3'><?php echo $buff['jenis_kelamin'][0]; ?></td>
+                  <td valign="middle" rowspan='3'><?php echo $buff['pendidikan_akhir']; ?></td>
+                  <td valign="middle" rowspan='3'><?php echo $buff['pangkat']; ?></td>
+                  <td valign="middle" rowspan='3'><?php echo $JABATAN[$buff['jabatan']]; ?></td>
+                  <!-- <td valign="middle" rowspan='3'><?php //echo $buff['tmt']; ?></td> -->
+                  <!-- <td valign="middle" rowspan='3'><?php //echo $buff['fakultas']; ?></td> -->
+                  <!-- <td valign="middle" rowspan='3'><?php //echo $buff['mk_lama']; ?></td>
+                  <td valign="middle" rowspan='3'><?php //echo $buff['mk_baru']; ?></td> -->
+                  <!-- <td valign="middle" rowspan='3'><?php //echo $buff['unit']; ?></td> -->
+                  <td valign="middle" rowspan='3'><?php echo $JABATAN[$buff['usulan_jabatan']]; ?></td>
+                  <td>
+                        <div class="btn-group-vertical">
+                              <a href="#" 
+                              class="glyphicon glyphicon-list-alt"
+                              data-toggle="tooltip" title="detail"></a>         
+                        </div>
+                        
+                  </td>
+            </tr>
+            <tr>
+                  <td>
+                        <a href="form_dosen_edit.php?id=<?php echo $buff['id']; ?>" 
+                        class="glyphicon glyphicon-cog"
+                        data-toggle="tooltip" title="edit data"></a>
+                  </td>
+            </tr> 
+            <tr>
+                  <td>
+                        <a href="form_dosen_delete.php?id=<?php echo $buff['id']; ?>" 
+                        class="glyphicon glyphicon-remove"
+                        data-toggle="tooltip" title="delete data"></a>
                   </td>
             </tr>
             <?php
+            $i++;
                   }
-                  mysql_close($sambung);
-            
             ?>
       </table>
-      <a href="form_dosen_input.php">tambah</a>
+      <a href="form_dosen_input.php" class=" btn btn-primary" role="button"
+            data-toggle="tooltip" title="delete data"><span class="glyphicon glyphicon-plus"></span> Tambah</a>
 </div> 
-       
+</div> 
+</div>    
 </form>
+<div id="detail" class="modal fade" role="dialog">
+  <div class="modal-dialog">
+  
+    <!-- Modal content-->
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <h4 class="modal-title">Modal Header</h4>
+      </div>
+      <div class="modal-body">
+        <p>Some text in the modal.</p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+
+  </div>
+</div>
 </body>
+</html>
