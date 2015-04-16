@@ -59,7 +59,7 @@
     }
 ?>
 <div style="width:700px;">
-<form name="form" method="post" action="form_sertifikat.php" enctype="multipart/form-data">
+<form name="form" method="post" action="form_sertifikat.php?id=<?php echo $_GET['id'];?>" enctype="multipart/form-data">
   <!--di copas -->
   <input type="hidden" id="angka_kredit"  name="angka_kredit"  value="<?php echo $_GET['id'];?>" />
   <table class="table table-striped table-borered">

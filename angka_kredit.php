@@ -13,61 +13,67 @@
 </head>
 <body>
 <?php
-
-session_start();
-    function db_connect() {
-
-        $db_host = "localhost";
-        $db_name = "jabatan_fungsional";
-        $db_user = "root";
-        $db_pass = "";
-
-        $con=mysqli_connect($db_host,$db_user,$db_pass,$db_name);
-        if (mysqli_connect_errno($con)) {
-            echo "Failed to connect to MySQL: " . mysqli_connect_error();
-        }else{
-            return $con;
-        }
-        mysqli_close($con);
-    }
-
-    $con = db_connect();
+include "koneksi.php";
     //FILTER = JENJANGE DOSEN YANG LOGIN, 
 
-   /* if(isset($_GET['ak'])) {
+   /* if(isset($_GET['ak'])) { 
     	$_SESSION["angkaKredit"] .= ",".$_GET['ak'];
     	str_replace("array", "", $_SESSION["angkaKredit"]);
     } else if(isset($_GET['reset']) && $_GET['reset'] == 'ok') {
     	session_destroy();
     	$_SESSION["angkaKredit"] = "";
     }*/
+    if (isset($_GET['id'])) {
+    	$idDosen = $_GET['id'];
+    	//~ini buat select dosen
+	    $pross = "SELECT * FROM data_dosen WHERE id=$idDosen";
+	    $result = mysql_query($pross);
+	    //echo $pross;
+	    $dataDosen = mysql_fetch_assoc($result);
+	    $jabatanDosen = $dataDosen['jabatan'];
 
-    $pross = "SELECT  *  FROM angka_kredit WHERE id NOT IN (0".$_SESSION["angkaKredit"].")";
-    $result = mysqli_query($con, $pross);
-    echo $pross;
+	    $_SESSION['dosen'] = $dataDosen;
+	    
+    } else {
+    	$idDosen = '';
+    	$jabatanDosen = 4;		
+    }
 
-    while($data = mysqli_fetch_array($result, MYSQLI_ASSOC)) {
+    $pross = "SELECT  *  FROM angka_kredit  where  id_jabatan <= $jabatanDosen";
+    $result = mysql_query($pross);
+    //echo $pross;
+
+    while($data = mysql_fetch_assoc($result)) {
     	$row[] = $data;
     }
+
+    if(!empty($dataDosen)){
+    	echo '<a href="pilih_dosen.php" class="list-group-item">';
+	    echo '<h5>NIDN : '.$dataDosen['nidn'].'</h5>';
+	    echo '<h3>'.$dataDosen['nama_dosen'].'</h3>';
+	    echo '<p>Jabatan : '.$JABATAN[$dataDosen['jabatan']].' / '.$dataDosen['pangkat'].'</p>';
+	    echo '<p>Pengajuan : '.$JABATAN[$dataDosen['usulan_jabatan']].'</p>';
+	    echo '</a>'; 
+    }
+    //echo "<pre>";print_r($row); exit;
 ?>
 
 <div class="table-responsive"> 
-<a href="index.php?reset=ok">reset</a>
+<!-- <a href="index.php?reset=ok">reset</a> -->
 	<table class="table table-striped table-bordered">
 	<?php 
 	$unsur = '';
 	foreach ($row as $key => $value) {
 	if ($value['unsur'] != $unsur) {
-		echo '<tr><td colspan="6">'.$value['unsur'].'</td></tr>';
+		echo '<tr><td colspan="8">'.$value['unsur'].'</td></tr>';
 		$unsur = $value['unsur']; ?>
 		<tr>
-			<td colspan="2">&nbsp;</td>
-			<td>NO</td>
+			<td  colspan="2">NO</td>
 			<td>SUB UNSUR</td>
 			<td>KEGIATAN</td>
 			<td>JUMLAH</td>
 			<td>SATUAN HASIL</td>
-			<td>jabatan</td>
+			<td>JABATAN</td>
 		</tr>
 	<?php } ?>
 	<tr>
@@ -77,7 +83,7 @@ session_start();
 		<td><?php echo $value['kegiatan']; ?></td>
 		<td><input name="ak" type="input"></td>
 		<td><?php echo $value['satuan']; ?></td>
-		<td><?php echo $value['id_jabatan']; ?></td>
+		<td><?php echo $JABATAN[$value['id_jabatan']]; ?></td>
 	</tr>
 	<?php 
 	}

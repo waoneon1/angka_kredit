@@ -20,10 +20,10 @@ for($j = 0; $j < sizeof($_FILES["fileToUpload"]["name"]) ; $j++){
 		$tempat = $_POST['tempat'][$j];
 		$waktu = $_POST['waktu'][$j];
 		$keterangan = $_POST['keterangan'][$j];
-
+		$dosen_id = $_SESSION['dosen']['id'];
 		$bukti = $_FILES["fileToUpload"]['name'][$j][$i];
 
-		$insert ="insert into pendidikan values('','$angka_kredit','$sertifikat','$tempat','$waktu','','$keterangan','$bukti')";
+		$insert ="insert into pendidikan values('','$angka_kredit','$dosen_id','$sertifikat','$tempat','$waktu','','$keterangan','$bukti')";
 		$query = mysql_query($insert);
 
 	}
